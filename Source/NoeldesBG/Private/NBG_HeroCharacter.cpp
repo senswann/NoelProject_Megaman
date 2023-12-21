@@ -203,8 +203,7 @@ void ANBG_HeroCharacter::Invicibility(){
 	IsInvicible = true;
 
 	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, [this]()
-		{
+	GetWorldTimerManager().SetTimer(TimerHandle, [this](){
 			UE_LOG(LogTemp, Warning, TEXT("Not Invicible"));
 			IsInvicible = false;
 		}, 1.5f, false);

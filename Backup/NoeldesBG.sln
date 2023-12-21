@@ -1,3 +1,4 @@
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31314.256
@@ -117,8 +118,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoeldesBGModuleRules", "Int
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Visualizers", "Visualizers", "{1CCEC849-CC72-4C59-8C36-2F7C38706D4C}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natstepfilter = ..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natstepfilter
 		..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natvis = ..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natvis
+		..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natstepfilter = ..\..\Moteur\UE_5.3\Engine\Extras\VisualStudioDebugging\Unreal.natstepfilter
 	EndProjectSection
 EndProject
 Global
@@ -128,6 +129,10 @@ Global
 		Development Editor|Win64 = Development Editor|Win64
 		Development|Win64 = Development|Win64
 		Shipping|Win64 = Shipping|Win64
+	EndGlobalSection
+	# UnrealVS Section
+	GlobalSection(ddbf523f-7eb6-4887-bd51-85a714ff87eb) = preSolution
+		AvailablePlatforms=Win64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B5148BE4-81AE-38FD-9C57-906D36A94D07}.DebugGame Editor|Win64.ActiveCfg = BuiltWithUnrealBuildTool|Win64
@@ -610,13 +615,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0BFBE63A-B98A-3411-8EEB-8918FEC737B3} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
-		{57713676-9DBE-331C-AD10-26632AC9EE0C} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
-		{7B5CFB44-F0FB-31DF-AE62-C3C096A29A7B} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
 		{B5148BE4-81AE-38FD-9C57-906D36A94D07} = {233774A8-CC9D-3FA9-86D1-90573E92B704}
 		{46D40729-6197-33BC-88CC-0EF923CF6D0A} = {DE1F8B53-6C02-3C13-9101-A7C8D96F3FF6}
 		{03690850-9ED1-32B9-92BD-6BDD07213F08} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
 		{5144062E-4E22-3450-867C-2EBCE88BE1A6} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
+		{0BFBE63A-B98A-3411-8EEB-8918FEC737B3} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
+		{7B5CFB44-F0FB-31DF-AE62-C3C096A29A7B} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
+		{57713676-9DBE-331C-AD10-26632AC9EE0C} = {A338B9E2-A559-34BE-A46D-F789DD488FAD}
 		{EB88A719-B532-3906-9973-7E793BA3A9F8} = {0BFBE63A-B98A-3411-8EEB-8918FEC737B3}
 		{37F9FB23-F8F2-3DBE-8933-371A6AB7B2D1} = {0BFBE63A-B98A-3411-8EEB-8918FEC737B3}
 		{AE5507D6-8F45-3D54-96DB-C4D456A2001C} = {0BFBE63A-B98A-3411-8EEB-8918FEC737B3}
@@ -661,11 +666,5 @@ Global
 		{90F51153-2A0C-31C5-BC5A-018D7FD6A9D4} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
 		{F7B555C4-E656-3933-B89F-31301F68A109} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
 		{CFB3BFE5-C653-3004-AE22-EE64EEB91A37} = {C2F57ECE-B26F-39D8-BDA7-C1D40BD8F180}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {37DB16CC-0300-4938-BD45-30010F231900}
-	EndGlobalSection
-	GlobalSection(ddbf523f-7eb6-4887-bd51-85a714ff87eb) = preSolution
-		AvailablePlatforms = Win64
 	EndGlobalSection
 EndGlobal

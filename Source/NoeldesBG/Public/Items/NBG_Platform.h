@@ -18,32 +18,22 @@ class NOELDESBG_API ANBG_Platform : public ANBG_ItemParent
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UInterpToMovementComponent* InterpToMovementComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UInterpToMovementComponent* InterpToMovementComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UInterpToMovementComponent* InterpToMovementComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UInterpToMovementComponent* InterpToMovementComponent;
 public:	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value")
+	bool OpenPlatformBool = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value", meta = (MakeEditWidget, ExposeOnSpawn, InstanceEditable))
+    TArray<FVector> Locations;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value")
+	float Duration = 1.f;
+
+	void OpenPlatform();
 	// Sets default values for this actor's properties
 	ANBG_Platform();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void PreInitializeComponents();
-
-#if WITH_EDITOR
-	//Handle UDataTable after first compile of project
-	virtual void PostInitializeComponents() override;
-	//Handle UDataTable after property change
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#endif
-
-private:
-	bool Create2Point();
 
 };

@@ -47,6 +47,17 @@ void ANBG_Projectiles::BeginPlay()
             Dammage = GetDataTableValue(RowName);
         }
         else {}
+        // Désactiver les collisions
+        if (StaticMeshComponent)
+        {
+            StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        }
+        // Réactiver les collisions après un délai de 0.1 seconde
+        FTimerHandle TimerHandle;
+        GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+            {
+                StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+            }, 0.1f, false);
     }
 }
 
