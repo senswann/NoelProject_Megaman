@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
 #include "Items/NBG_Projectiles.h"
 #include "Components/ArrowComponent.h"
 
@@ -90,7 +91,7 @@ int32 ANBG_HeroCharacter::GetDataTableValue(const FString RowName)
 void ANBG_HeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	FString RowName = TEXT("VieJoueur");
 	HP = HP_Max = GetDataTableValue(RowName);
 
@@ -112,6 +113,10 @@ void ANBG_HeroCharacter::BeginPlay()
 				HUD->AddToViewport();
 				UE_LOG(LogTemp, Warning, TEXT("Valeur HP: %d"), HP_Max);
 				HUD->SetHP_Max(HP_Max);
+
+				if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
+					_GameMode->SetHUD(HUD);
+				}
 			}
 		}
 	}
@@ -218,7 +223,6 @@ void ANBG_HeroCharacter::SetHP(int32 _hp)
 	else {
 		HP += _hp;
 	}
-	Invicibility();
 	HUD->SetHP(HP);
 }
 

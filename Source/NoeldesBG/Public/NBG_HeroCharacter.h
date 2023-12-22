@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "Widget/NBG_HUD.h"
+#include "NBG_MegamanSystem.h"
 #include "NBG_HeroCharacter.generated.h"
 
 class USpringArmComponent;
@@ -94,6 +95,9 @@ public:
 
 	//fonction pour prendre des dégats.
 	void GetDamage(int32 _dmg);
+
+	void SetHP(int32 _hp);
+
 protected:
 
 	/** Called for movement input */
@@ -105,8 +109,6 @@ protected:
 	/** Called for looking input */
 	void IA_Shoot(const FInputActionValue& Value);
 
-	void SetHP(int32 _hp);
-
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -117,7 +119,7 @@ protected:
 	int32 GetDataTableValue(const FString RowName);
 
 	UFUNCTION()
-		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 public:	
 	/** Returns CameraBoom subobject **/

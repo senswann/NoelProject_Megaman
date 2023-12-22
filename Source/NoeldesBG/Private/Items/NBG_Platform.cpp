@@ -6,27 +6,29 @@
 // Sets default values
 ANBG_Platform::ANBG_Platform()
 {
+    Locations.Init(FVector(), 2);
     // Create the static mesh component and set it as the root component
-    StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-    RootComponent = StaticMeshComponent;
+    ParentMeshForInterp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+    RootComponent = ParentMeshForInterp;
+    StaticMeshComponent2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent2"));
+    StaticMeshComponent2->AttachToComponent(ParentMeshForInterp, FAttachmentTransformRules::KeepRelativeTransform);
 
     InterpToMovementComponent = CreateDefaultSubobject<UInterpToMovementComponent>(TEXT("MyInterpToMovementComponent"));
     if (InterpToMovementComponent)
     {
         // Set properties for the movement
         InterpToMovementComponent->UpdatedComponent = RootComponent;
-        /*InterpToMovementComponent->BehaviourType = EInterpToBehaviourType::PingPong;
+        InterpToMovementComponent->BehaviourType = EInterpToBehaviourType::PingPong;
         InterpToMovementComponent->bAutoActivate = true;
-        InterpToMovementComponent->bAllowConcurrentTick = true;*/
+        InterpToMovementComponent->bSweep = false;
     }
-    Locations.Init(FVector(), 2);
 }
 
 // Called when the game starts or when spawned
 void ANBG_Platform::BeginPlay()
 {
     Super::BeginPlay();
-    /*if (InterpToMovementComponent)
+    if (InterpToMovementComponent)
     {
         TArray<FInterpControlPoint> InterpArray;
         InterpArray.Add(FInterpControlPoint(Locations[0], true));
@@ -36,17 +38,17 @@ void ANBG_Platform::BeginPlay()
         InterpToMovementComponent->Duration = Duration;
         InterpToMovementComponent->FinaliseControlPoints();
         InterpToMovementComponent->Activate();
-    }*/
+    }
 }
 
 void ANBG_Platform::OpenPlatform()
 {
-        FRotator tmpRotation;
+    FRotator tmpRotation;
     if (OpenPlatformBool) {
-        tmpRotation = FRotator(0.0f, -40.f, 0.0f);
+        tmpRotation = FRotator(-40.f, 0.f, 0.0f);
     }else{
-        tmpRotation = FRotator(0.0f, 40.f, 0.0f);
+        tmpRotation = FRotator(40.f, 0.f, 0.0f);
     }
-    StaticMeshComponent->AddLocalRotation(tmpRotation);
+    StaticMeshComponent2->AddLocalRotation(tmpRotation);
     OpenPlatformBool = !OpenPlatformBool;
 }

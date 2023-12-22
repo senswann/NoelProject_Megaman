@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/InterpToMovementComponent.h"
+#include "Components/BoxComponent.h"
 #include "../../Private/Items/NBG_ItemParent.h"
 #include "NBG_Platform.generated.h"
 
@@ -14,7 +15,11 @@ class NOELDESBG_API ANBG_Platform : public ANBG_ItemParent
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UStaticMeshComponent* StaticMeshComponent;
+	UStaticMeshComponent* ParentMeshForInterp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UStaticMeshComponent* StaticMeshComponent2;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UInterpToMovementComponent* InterpToMovementComponent;
