@@ -89,6 +89,9 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	TSubclassOf<class ANBG_Projectiles> ProjectileClass;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "MyFunctions")
+	void Stun();
+
 	void Invicibility();
 	// Sets default values for this character's properties
 	ANBG_HeroCharacter();
@@ -102,9 +105,6 @@ protected:
 
 	/** Called for movement input */
 	void IA_Move(const FInputActionValue& Value);
-
-	/** Called for looking input */
-	void IA_Look(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void IA_Shoot(const FInputActionValue& Value);

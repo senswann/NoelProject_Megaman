@@ -138,9 +138,6 @@ void ANBG_HeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANBG_HeroCharacter::IA_Move);
 
-		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANBG_HeroCharacter::IA_Look);
-		
 		// Shooting
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ANBG_HeroCharacter::IA_Shoot);
 	}
@@ -173,19 +170,6 @@ void ANBG_HeroCharacter::IA_Move(const FInputActionValue& Value)
 	}
 }
 
-void ANBG_HeroCharacter::IA_Look(const FInputActionValue& Value)
-{
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
-}
-
 void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 {
 	UWorld* World = GetWorld();
@@ -201,6 +185,18 @@ void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 			TmpProjectile->SetOwner(this);
 		}
 	}
+}
+
+void ANBG_HeroCharacter::Stun() {
+	UE_LOG(LogTemp, Warning, TEXT("Stun"));
+	GetCharacterMovement()->JumpZVelocity = 0.f;
+	GetCharacterMovement()->MaxWalkSpeed = 0.f;
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
+		UE_LOG(LogTemp, Warning, TEXT("Not Stun"));
+		GetCharacterMovement()->JumpZVelocity = 700.f;
+		GetCharacterMovement()->MaxWalkSpeed = 500.f;
+		}, 1.f, false);
 }
 
 void ANBG_HeroCharacter::Invicibility(){
