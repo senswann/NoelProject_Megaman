@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "Widget/NBG_HUD.h"
+#include "NBG_E_Hero.h"
 #include "NBG_MegamanSystem.h"
 #include "NBG_HeroCharacter.generated.h"
 
@@ -63,6 +64,7 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	UInputAction* ShootAction;
 
 								/** VARIABLE */
+
 	//pour stocker le pointeur de la DataTable
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
     UDataTable* DT_ValueInGame;
@@ -83,6 +85,11 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	//HP du joueur
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	bool IsInvicible=false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
+	NBG_E_Hero State;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
+	NBG_E_Hero Prev_State;
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
@@ -105,9 +112,12 @@ protected:
 
 	/** Called for movement input */
 	void IA_Move(const FInputActionValue& Value);
+	void IA_Move_Completed(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void IA_Shoot(const FInputActionValue& Value);
+
+	void IA_Jump(const FInputActionValue& Value);
 
 protected:
 	// APawn interface

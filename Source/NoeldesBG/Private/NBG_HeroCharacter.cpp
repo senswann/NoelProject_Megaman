@@ -132,11 +132,12 @@ void ANBG_HeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ANBG_HeroCharacter::IA_Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANBG_HeroCharacter::IA_Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &ANBG_HeroCharacter::IA_Move_Completed);
 
 		// Shooting
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ANBG_HeroCharacter::IA_Shoot);
@@ -154,6 +155,10 @@ void ANBG_HeroCharacter::IA_Move(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
+		if (State != NBG_E_Hero::Shoot) { 
+			State = NBG_E_Hero::Walk; 
+			if (Prev_State == State) { Prev_State = State; }
+		}
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -162,18 +167,30 @@ void ANBG_HeroCharacter::IA_Move(const FInputActionValue& Value)
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
 		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		//const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+		//AddMovementInput(RightDirection, MovementVector.X);
 	}
+}
+
+void ANBG_HeroCharacter::IA_Move_Completed(const FInputActionValue& Value) {
+	if (Prev_State != State) { State = Prev_State; }
+	else { State = NBG_E_Hero::Idle; }
+}
+
+void ANBG_HeroCharacter::IA_Jump(const FInputActionValue& Value)
+{
+	ACharacter::Jump();
+	State = NBG_E_Hero::Jump;
+	if (Prev_State == State) { Prev_State = State; }
 }
 
 void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 {
 	UWorld* World = GetWorld();
-	if (Controller != nullptr){
+	if (Controller != nullptr && State !=NBG_E_Hero::Shoot){
 		FVector ArrowLocation = ShootArrowComponent->GetComponentLocation();
 		FRotator ArrowRotation = ShootArrowComponent->GetComponentRotation();
 		FTransform SpawnTransform;
@@ -184,6 +201,8 @@ void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 		if (TmpProjectile){
 			TmpProjectile->SetOwner(this);
 		}
+		State = NBG_E_Hero::Shoot;
+		if (Prev_State == State) { Prev_State = State; }
 	}
 }
 
