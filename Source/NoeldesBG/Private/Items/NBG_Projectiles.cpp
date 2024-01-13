@@ -34,16 +34,30 @@ void ANBG_Projectiles::BeginPlay()
 
     if (GetOwner()) {
         FString OwnerClassName = Owner->GetClass()->GetName();
-
+        UE_LOG(LogTemp, Warning, TEXT("Class : %s"), *OwnerClassName);
         // Use the class name in a switch statement
-        if (OwnerClassName == "ANBG_HeroCharacter")
+        if (OwnerClassName == "BP_NBG_HeroCharacter_C")
         {
+            UE_LOG(LogTemp, Warning, TEXT("HERO"));
             RowName = TEXT("DamageJoueur");
             Dammage = GetDataTableValue(RowName);
         }
-        else if (OwnerClassName == "ANBG_AiSimple")
+        else if (OwnerClassName == "BP_AiBase_Simple_C")
         {
+            UE_LOG(LogTemp, Warning, TEXT("SIMPLE"));
             RowName = TEXT("SimpleEnnemiDamage");
+            Dammage = GetDataTableValue(RowName);
+        }
+        else if (OwnerClassName == "BP_AiBase_Complex_C")
+        {
+            UE_LOG(LogTemp, Warning, TEXT("COMPLEX"));
+            RowName = TEXT("ComplexEnnemiDmg");
+            Dammage = GetDataTableValue(RowName);
+        }
+        else if (OwnerClassName == "BP_AiBase_Boss_C")
+        {
+            UE_LOG(LogTemp, Warning, TEXT("BOSS"));
+            RowName = TEXT("BossEnnemiDamage");
             Dammage = GetDataTableValue(RowName);
         }
         else {}
@@ -91,7 +105,7 @@ bool ANBG_Projectiles::EnsureDataTableValue()
 {
     if (DT_ValueInGame)
     {
-        FString RowName = TEXT("ShootSpeed");
+        FString RowName = (isBoss?TEXT("BossProjectileSpeed"):TEXT("ProjectileSpeed"));
         float ValueFromDataTable = static_cast<float>(GetDataTableValue(RowName));
         ProjectileMovementComponent->InitialSpeed = ValueFromDataTable;
         ProjectileMovementComponent->MaxSpeed = ValueFromDataTable;

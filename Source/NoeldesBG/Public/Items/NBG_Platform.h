@@ -20,6 +20,8 @@ class NOELDESBG_API ANBG_Platform : public ANBG_ItemParent
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* StaticMeshComponent2;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UBoxComponent* BoxCollision;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UInterpToMovementComponent* InterpToMovementComponent;

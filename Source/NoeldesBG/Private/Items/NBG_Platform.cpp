@@ -13,6 +13,10 @@ ANBG_Platform::ANBG_Platform()
     StaticMeshComponent2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent2"));
     StaticMeshComponent2->AttachToComponent(ParentMeshForInterp, FAttachmentTransformRules::KeepRelativeTransform);
 
+    BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+    BoxCollision->InitBoxExtent(FVector(32.f, 32.f, 32.f));
+    BoxCollision->AttachToComponent(ParentMeshForInterp, FAttachmentTransformRules::KeepRelativeTransform);
+
     InterpToMovementComponent = CreateDefaultSubobject<UInterpToMovementComponent>(TEXT("MyInterpToMovementComponent"));
     if (InterpToMovementComponent)
     {
@@ -45,9 +49,11 @@ void ANBG_Platform::OpenPlatform()
 {
     FRotator tmpRotation;
     if (OpenPlatformBool) {
-        tmpRotation = FRotator(-40.f, 0.f, 0.0f);
+        BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        tmpRotation = FRotator(0.f, 0.f, 90.f);
     }else{
-        tmpRotation = FRotator(40.f, 0.f, 0.0f);
+        BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+        tmpRotation = FRotator(0.f, 0.f, -90.f);
     }
     StaticMeshComponent2->AddLocalRotation(tmpRotation);
     OpenPlatformBool = !OpenPlatformBool;

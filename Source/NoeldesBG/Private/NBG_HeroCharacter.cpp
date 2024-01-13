@@ -94,6 +94,8 @@ void ANBG_HeroCharacter::BeginPlay()
 	
 	FString RowName = TEXT("VieJoueur");
 	HP = HP_Max = GetDataTableValue(RowName);
+	RowName = TEXT("ShootSpeedJoueur");
+	ShootSpeed = GetDataTableValue(RowName);
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -106,16 +108,19 @@ void ANBG_HeroCharacter::BeginPlay()
 		{
 			// Créer une instance de votre widget HUD
 			HUD = CreateWidget<UNBG_HUD>(PlayerController, HUD_Class);
+			Menu_W = CreateWidget<UNBG_Menu>(PlayerController, Menu_Class);
 
-			if (HUD)
+			if (HUD && Menu_W)
 			{
 				// Ajouter le widget à la vue (viewport)
 				HUD->AddToViewport();
 				UE_LOG(LogTemp, Warning, TEXT("Valeur HP: %d"), HP_Max);
 				HUD->SetHP_Max(HP_Max);
 
+				Menu_W->AddToViewport();
 				if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
 					_GameMode->SetHUD(HUD);
+					_GameMode->SetMenu(Menu_W);
 				}
 			}
 		}
@@ -141,6 +146,9 @@ void ANBG_HeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		// Shooting
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &ANBG_HeroCharacter::IA_Shoot);
+
+		// Pause
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &ANBG_HeroCharacter::IA_Pause);
 	}
 	else
 	{
@@ -187,20 +195,33 @@ void ANBG_HeroCharacter::IA_Jump(const FInputActionValue& Value)
 	if (Prev_State == State) { Prev_State = State; }
 }
 
+void ANBG_HeroCharacter::IA_Pause(const FInputActionValue& Value)
+{
+	if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
+		UE_LOG(LogTemp, Warning, TEXT("MenuAction"));
+		_GameMode->Menu();
+	}
+}
+
 void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 {
 	UWorld* World = GetWorld();
-	if (Controller != nullptr && State !=NBG_E_Hero::Shoot){
+	if (Controller != nullptr && State !=NBG_E_Hero::Shoot&& IsShootEnabled){
+		IsShootEnabled = false;
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
+			IsShootEnabled = true;
+			}, ShootSpeed, false);
 		FVector ArrowLocation = ShootArrowComponent->GetComponentLocation();
 		FRotator ArrowRotation = ShootArrowComponent->GetComponentRotation();
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(ArrowLocation);
 		SpawnTransform.SetRotation(ArrowRotation.Quaternion());
 
-		ANBG_Projectiles* TmpProjectile = World->SpawnActor<ANBG_Projectiles>(ProjectileClass, SpawnTransform);
-		if (TmpProjectile){
-			TmpProjectile->SetOwner(this);
-		}
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+
+		ANBG_Projectiles* TmpProjectile = World->SpawnActor<ANBG_Projectiles>(ProjectileClass, SpawnTransform, SpawnParams);
 		State = NBG_E_Hero::Shoot;
 		if (Prev_State == State) { Prev_State = State; }
 	}
@@ -241,11 +262,22 @@ void ANBG_HeroCharacter::SetHP(int32 _hp)
 	HUD->SetHP(HP);
 }
 
+void ANBG_HeroCharacter::Death()
+{
+	UE_LOG(LogTemp, Warning, TEXT("DEATH"));
+	if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
+		UE_LOG(LogTemp, Warning, TEXT("TRUE DEATH"));
+		_GameMode->Menu();
+	}
+}
+
 void ANBG_HeroCharacter::GetDamage(int32 _dmg)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Dmg : %d"), _dmg);
 	if (!IsInvicible) {
-		if ((HP- _dmg) <= 0) {
+		if ((HP - _dmg) <= 0) {
 			HP = 0;
+			Death();
 		}
 		else {
 			HP -= _dmg;
@@ -256,6 +288,7 @@ void ANBG_HeroCharacter::GetDamage(int32 _dmg)
 }
 
 void ANBG_HeroCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
+	UE_LOG(LogTemp, Warning, TEXT("Overlap"));
 	if (ANBG_Projectiles* other = Cast<ANBG_Projectiles>(OtherActor)) {
 		GetDamage(other->Dammage);
 	}

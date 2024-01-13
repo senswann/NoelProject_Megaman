@@ -27,18 +27,18 @@ void ANBG_ItemParent::Tick(float DeltaTime)
 
 int32 ANBG_ItemParent::GetDataTableValue(const FString RowName) {
 	if (DT_ValueInGame != nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("DataTable Valid"));
+		//UE_LOG(LogTemp, Warning, TEXT("DataTable Valid"));
 		bool bSuccess = false;
 
 		FName name = FName(RowName);
 		FNBG_StatsStruct* tmp_RowValue = DT_ValueInGame->FindRow<FNBG_StatsStruct>(name, "", bSuccess);
-		UE_LOG(LogTemp, Warning, TEXT("Row Value Found: %d"), tmp_RowValue->Value);
+		//UE_LOG(LogTemp, Warning, TEXT("Row Value Found: %d"), tmp_RowValue->Value);
 		if (tmp_RowValue != nullptr) {
 			return tmp_RowValue->Value;
 		}
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("DataTable Not Valid"));
+		//UE_LOG(LogTemp, Warning, TEXT("DataTable Not Valid"));
 	}
 	return 0;
 }

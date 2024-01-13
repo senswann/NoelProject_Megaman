@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "Widget/NBG_HUD.h"
+#include "Widget/NBG_Menu.h"
 #include "NBG_E_Hero.h"
 #include "NBG_MegamanSystem.h"
 #include "NBG_HeroCharacter.generated.h"
@@ -63,6 +64,10 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* ShootAction;
 
+	/** Shoot Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* PauseAction;
+
 								/** VARIABLE */
 
 	//pour stocker le pointeur de la DataTable
@@ -74,6 +79,10 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	TSubclassOf<class UNBG_HUD> HUD_Class;
 	UNBG_HUD* HUD;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class UNBG_Menu> Menu_Class;
+	UNBG_Menu* Menu_W;
+
 	//HP du joueur
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	int32 HP=0;
@@ -82,7 +91,11 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	int32 HP_Max=0;
 
-	//HP du joueur
+	//ShootSpeed Joueur
+	int32 ShootSpeed = 0;
+	bool IsShootEnabled = true;
+
+	//IsInvincible du joueur
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	bool IsInvicible=false;
 
@@ -108,6 +121,7 @@ public:
 
 	void SetHP(int32 _hp);
 
+	void Death();
 protected:
 
 	/** Called for movement input */
@@ -118,6 +132,8 @@ protected:
 	void IA_Shoot(const FInputActionValue& Value);
 
 	void IA_Jump(const FInputActionValue& Value);
+
+	void IA_Pause(const FInputActionValue& Value);
 
 protected:
 	// APawn interface

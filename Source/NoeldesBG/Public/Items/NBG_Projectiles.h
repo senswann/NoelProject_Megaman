@@ -22,6 +22,9 @@ class NOELDESBG_API ANBG_Projectiles : public ANBG_ItemParent
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	int32 Dammage=0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
+	bool isBoss = false;
 	// Sets default values for this actor's properties
 	ANBG_Projectiles();
 
