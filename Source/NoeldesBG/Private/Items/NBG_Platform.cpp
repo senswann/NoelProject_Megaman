@@ -25,6 +25,7 @@ ANBG_Platform::ANBG_Platform()
         InterpToMovementComponent->BehaviourType = EInterpToBehaviourType::PingPong;
         InterpToMovementComponent->bAutoActivate = true;
         InterpToMovementComponent->bSweep = false;
+        InterpToMovementComponent->Velocity = FVector(0.5f, 0.5f, 0.5f);
     }
 }
 
@@ -34,6 +35,9 @@ void ANBG_Platform::BeginPlay()
     Super::BeginPlay();
     if (InterpToMovementComponent)
     {
+        FString RowName = TEXT("PlatformSpeed");
+        float ValueFromDataTable = static_cast<float>(GetDataTableValue(RowName));
+        Duration = ValueFromDataTable;
         TArray<FInterpControlPoint> InterpArray;
         InterpArray.Add(FInterpControlPoint(Locations[0], true));
         InterpArray.Add(FInterpControlPoint(Locations[1], true));

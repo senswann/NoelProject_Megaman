@@ -19,7 +19,7 @@ class NOELDESBG_API AHealthBoost : public ANBG_ItemParent
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value")
 	int32 HPRecovery = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value", meta = ( InstanceEditable))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value", meta = ( InstanceEditable))
 	bool IsHPMedium;
 
 	// Sets default values for this actor's properties

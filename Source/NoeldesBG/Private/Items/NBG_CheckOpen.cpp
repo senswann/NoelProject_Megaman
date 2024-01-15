@@ -11,7 +11,7 @@ ANBG_CheckOpen::ANBG_CheckOpen()
     RootComponent = BoxCollision;
     
     BoxCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    //BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ANBG_CheckOpen::OnOverlapBegin);
+    BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ANBG_CheckOpen::OnOverlapBegin);
 }
 
 // Called when the game starts or when spawned

@@ -20,7 +20,7 @@ class NOELDESBG_API ANBG_Projectiles : public ANBG_ItemParent
     UProjectileMovementComponent* ProjectileMovementComponent;
 
 public:	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
 	int32 Dammage=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
