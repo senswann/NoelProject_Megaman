@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "../../../Private/Items/NBG_ItemParent.h"
 #include "../../NBG_HeroCharacter.h"
 #include "HealthBoost.generated.h"
@@ -14,7 +15,10 @@ class NOELDESBG_API AHealthBoost : public ANBG_ItemParent
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UStaticMeshComponent* StaticMeshComponent;
+	USkeletalMesh* StaticMeshComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UBoxComponent* BoxCollision;
 
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value")

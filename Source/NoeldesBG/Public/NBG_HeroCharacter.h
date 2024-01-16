@@ -79,10 +79,6 @@ class NOELDESBG_API ANBG_HeroCharacter : public ACharacter
 	TSubclassOf<class UNBG_HUD> HUD_Class;
 	UNBG_HUD* HUD;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value", meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class UNBG_Menu> Menu_Class;
-	UNBG_Menu* Menu_W;
-
 	//HP du joueur
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
 	int32 HP=0;
