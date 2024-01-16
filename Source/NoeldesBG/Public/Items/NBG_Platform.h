@@ -9,8 +9,6 @@
 #include "../../Private/Items/NBG_ItemParent.h"
 #include "NBG_Platform.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
-
 UCLASS()
 class NOELDESBG_API ANBG_Platform : public ANBG_ItemParent
 {

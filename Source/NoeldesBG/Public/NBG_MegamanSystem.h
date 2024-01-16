@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Widget/NBG_HUD.h"
-#include "Widget/NBG_Menu.h"
 #include "NBG_MegamanSystem.generated.h"
 
 /**
@@ -38,13 +37,17 @@ class NOELDESBG_API ANBG_MegamanSystem : public AGameModeBase
 	UUserWidget* Menu_W;
 
 	static int32 indexLevel;
-
 	bool visibility = false;
 
 public:
 	void AddPoint(int32 _point);
 	inline void SetHUD(UNBG_HUD* _HUD) { HUD = _HUD; };
-	inline void SetMenu(UNBG_Menu* _Menu_W) { Menu_W = _Menu_W; Menu(); };
+
+	UFUNCTION(BlueprintCallable)
+	inline void SetHPMaxBoss(int32 _hp) { HUD->SetHP_Max_Boss(_hp); };
+
+	UFUNCTION(BlueprintCallable)
+	inline void SetHPBoss(int32 _hp) { HUD->SetHPBoss(_hp); };
 
 	UFUNCTION(BlueprintCallable)
 	void Menu();
@@ -65,7 +68,7 @@ public:
 	inline int32 GetPoints() { return CountPoint; };
 
 	UFUNCTION(BlueprintCallable)
-	void SetUIOnlyInputMode();
+	void SetUIOnlyInputMode(UUserWidget* _widget);
 
 	UFUNCTION(BlueprintCallable)
 	void SetGameOnlyInputMode();

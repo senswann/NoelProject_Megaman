@@ -28,6 +28,6 @@ void ANBG_CheckOpen::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
         FTimerHandle TimerHandle;
         GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
             BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-            }, 1.f, false);
+            }, 0.5f, false);
     }
 }

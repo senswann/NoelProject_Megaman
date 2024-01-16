@@ -4,7 +4,7 @@
 #include "NBG_MegamanSystem.h"
 #include "Kismet/GameplayStatics.h"
 
-int32 ANBG_MegamanSystem::indexLevel = 1;
+int32 ANBG_MegamanSystem::indexLevel = 0;
 
 void ANBG_MegamanSystem::BeginPlay()
 {
@@ -12,18 +12,19 @@ void ANBG_MegamanSystem::BeginPlay()
 
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
     {
-        if (GetWorld())
-        {
-            if (indexLevel == 0) {
-                UE_LOG(LogTemp, Warning, TEXT("MainMenu"));
-                MainMenu_W = CreateWidget<UUserWidget>(PlayerController, MainMenu_Class);
+        if (indexLevel == 0) {
+            UE_LOG(LogTemp, Warning, TEXT("MainMenu"));
+            MainMenu_W = CreateWidget<UUserWidget>(PlayerController, MainMenu_Class);
+            if (MainMenu_W) {
                 MainMenu_W->AddToViewport();
-                //SetUIOnlyInputMode();
+                SetUIOnlyInputMode(MainMenu_W);
             }
-            else {
-                /*Menu_W = CreateWidget<UNBG_Menu>(PlayerController, Menu_Class);
+        }
+        else {
+            Menu_W = CreateWidget<UUserWidget>(PlayerController, Menu_Class);
+            if (Menu_W) {
                 Menu_W->AddToViewport();
-                Menu();*/
+                Menu();
             }
         }
     }
@@ -36,13 +37,13 @@ void ANBG_MegamanSystem::AddPoint(int32 _point){
 
 void ANBG_MegamanSystem::Menu()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Menu"));
+    UE_LOG(LogTemp, Warning, TEXT("Menu : %d"), visibility);
     if (visibility) {
         Menu_W->SetVisibility(ESlateVisibility::Visible);
-        //SetUIOnlyInputMode();
+        SetUIOnlyInputMode(Menu_W);
     }else{
         Menu_W->SetVisibility(ESlateVisibility::Hidden);
-        //SetGameOnlyInputMode();
+        SetGameOnlyInputMode();
     }
     visibility = !visibility;
 }
@@ -88,7 +89,7 @@ void ANBG_MegamanSystem::GameOver()
         {
             GameOver_W = CreateWidget<UUserWidget>(PlayerController, GameOver_Class);
             GameOver_W->AddToViewport();
-            //SetUIOnlyInputMode();
+            SetUIOnlyInputMode(GameOver_W);
         }
     }
 }
@@ -101,12 +102,12 @@ void ANBG_MegamanSystem::StageSelection()
         {
             StageSelection_W = CreateWidget<UUserWidget>(PlayerController, StageSelection_Class);
             StageSelection_W->AddToViewport();
-            //SetUIOnlyInputMode();
+            SetUIOnlyInputMode(StageSelection_W);
         }
     }
 }
 
-void ANBG_MegamanSystem::SetUIOnlyInputMode()
+void ANBG_MegamanSystem::SetUIOnlyInputMode(UUserWidget* _widget)
 {
     APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
     if (PlayerController)
@@ -115,7 +116,7 @@ void ANBG_MegamanSystem::SetUIOnlyInputMode()
         FInputModeUIOnly InputMode;
 
         // Spécifiez le widget sur lequel le focus doit être mis
-        InputMode.SetWidgetToFocus(Menu_W->TakeWidget());
+        InputMode.SetWidgetToFocus(_widget->TakeWidget());
 
         // Appliquez le mode d'entrée
         PlayerController->SetInputMode(InputMode);

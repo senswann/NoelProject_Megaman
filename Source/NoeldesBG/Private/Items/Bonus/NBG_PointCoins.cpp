@@ -8,10 +8,12 @@
 ANBG_PointCoins::ANBG_PointCoins()
 {
 	// Create the static mesh component and set it as the root component
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-	StaticMeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ANBG_PointCoins::OnOverlapBegin);
-	RootComponent = StaticMeshComponent;
+	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
+	RootComponent = MeshComponent;
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ANBG_PointCoins::OnOverlapBegin);
+	BoxCollision->AttachToComponent(MeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned

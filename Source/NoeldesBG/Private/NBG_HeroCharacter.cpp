@@ -114,9 +114,9 @@ void ANBG_HeroCharacter::BeginPlay()
 				// Ajouter le widget à la vue (viewport)
 				HUD->AddToViewport();
 				UE_LOG(LogTemp, Warning, TEXT("Valeur HP: %d"), HP_Max);
-				//HUD->SetHP_Max(HP_Max);
+				HUD->SetHP_Max(HP_Max);
 				if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
-					//_GameMode->SetHUD(HUD);
+					_GameMode->SetHUD(HUD);
 				}
 			}
 		}
@@ -248,7 +248,7 @@ void ANBG_HeroCharacter::Invicibility(){
 
 void ANBG_HeroCharacter::SetHP(int32 _hp)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Dmg : %d"), _hp);
+	UE_LOG(LogTemp, Warning, TEXT("HP Recovery : %d"), _hp);
 	if ((_hp + HP) > 100) {
 		HP = HP_Max;
 	}
@@ -263,7 +263,7 @@ void ANBG_HeroCharacter::Death()
 	UE_LOG(LogTemp, Warning, TEXT("DEATH"));
 	if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
 		UE_LOG(LogTemp, Warning, TEXT("TRUE DEATH"));
-		_GameMode->Menu();
+		_GameMode->GameOver();
 	}
 }
 

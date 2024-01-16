@@ -13,14 +13,14 @@ UCLASS()
 class NOELDESBG_API AHealthBoost : public ANBG_ItemParent
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	USkeletalMeshComponent* StaticMeshComponent;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UBoxComponent* BoxCollision;
 
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
+	class USkeletalMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Components")
+	UBoxComponent* BoxCollision;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value")
 	int32 HPRecovery = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value", meta = ( InstanceEditable))
