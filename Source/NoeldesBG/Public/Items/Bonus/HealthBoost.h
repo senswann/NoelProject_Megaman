@@ -15,7 +15,7 @@ class NOELDESBG_API AHealthBoost : public ANBG_ItemParent
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	USkeletalMesh* StaticMeshComponent;
+	USkeletalMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	UBoxComponent* BoxCollision;

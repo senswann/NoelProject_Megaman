@@ -11,7 +11,7 @@ AHealthBoost::AHealthBoost()
 	BoxCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AHealthBoost::OnOverlapBegin);
 	RootComponent = BoxCollision;
-	StaticMeshComponent = CreateDefaultSubobject<USkeletalMesh>(TEXT("MeshComponent"));
+	StaticMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
 }
 
 // Called when the game starts or when spawned

@@ -14,6 +14,6 @@ struct FNBG_StatsStruct : public FTableRowBase
 public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        int32 Value;
+    int32 Value=0;
 	
 };
