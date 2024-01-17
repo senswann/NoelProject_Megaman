@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Items/NBG_Projectiles.h"
+#include "Items/NBG_BigProjectile.h"
 
 #define PBool(value) (*FString((value)?"True":"False"))
 #define PName(value) (*((IsValid(value))?value->GetName():FString(value == nullptr ? "nullptr":"invalidObject")))
@@ -10,27 +10,27 @@
 #define IPName(value) ( *( (value != nullptr && IsValid(value->_getUObject())) ? value->_getUObject()->GetName() : FString(value == nullptr ? "nullptr":"invalidObject") ) )
 
 // Sets default values
-ANBG_Projectiles::ANBG_Projectiles()
+ANBG_BigProjectile::ANBG_BigProjectile()
 {
-    SetLifeSpan(1.f);
     // Create the static mesh component and set it as the root component
-    StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
-    StaticMeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    RootComponent = StaticMeshComponent;
+    MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
+    MeshComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    RootComponent = MeshComponent;
 
     BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
     BoxCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &ANBG_BigProjectile::OnOverlapBegin);
 
     // Create and initialize the projectile movement component
     ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
-    ProjectileMovementComponent->SetUpdatedComponent(StaticMeshComponent);
+    ProjectileMovementComponent->SetUpdatedComponent(MeshComponent);
 
     ProjectileMovementComponent->bRotationFollowsVelocity = false;
     ProjectileMovementComponent->ProjectileGravityScale = 0.f;
 }
 
 // Called when the game starts or when spawned
-void ANBG_Projectiles::BeginPlay()
+void ANBG_BigProjectile::BeginPlay()
 {
     Super::BeginPlay();
     FString RowName;
@@ -64,21 +64,34 @@ void ANBG_Projectiles::BeginPlay()
             Dammage = GetDataTableValue(RowName);
         }
         else {}
-        // Désactiver les collisions
-        if(StaticMeshComponent)
-        {
-            StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        }
-        // Réactiver les collisions après un délai de 0.1 seconde
-        FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, [this]()
-            {
-                StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-            }, 0.05f, false);
     }
 }
 
-void ANBG_Projectiles::PreInitializeComponents()
+int32 ANBG_BigProjectile::GetDataTableValue(const FString RowName)
+{
+    if (DT_ValueInGame != nullptr) {
+        UE_LOG(LogTemp, Warning, TEXT("DataTable Valid"));
+        bool bSuccess = false;
+
+        FName name = FName(RowName);
+        FNBG_StatsStruct* tmp_RowValue = DT_ValueInGame->FindRow<FNBG_StatsStruct>(name, "", bSuccess);
+        UE_LOG(LogTemp, Warning, TEXT("Row Value Found: %d"), tmp_RowValue->Value);
+        if (tmp_RowValue != nullptr) {
+            return tmp_RowValue->Value;
+        }
+    }
+    else {
+        UE_LOG(LogTemp, Warning, TEXT("DataTable Not Valid"));
+    }
+    return 0;
+}
+
+void ANBG_BigProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+    isCailloux = true;
+    UE_LOG(LogTemp, Error, TEXT("Overlap: %s"), *OtherActor->GetName())
+}
+
+void ANBG_BigProjectile::PreInitializeComponents()
 {
     UE_LOG(LogTemp, Warning, TEXT("PreInitializeComponents is %s"), PName(DT_ValueInGame));
 
@@ -87,7 +100,7 @@ void ANBG_Projectiles::PreInitializeComponents()
 }
 
 #if WITH_EDITOR
-void ANBG_Projectiles::PostInitializeComponents()
+void ANBG_BigProjectile::PostInitializeComponents()
 {
     UE_LOG(LogTemp, Warning, TEXT("PostInitializeComponents is %s"), PName(DT_ValueInGame));
 
@@ -95,7 +108,7 @@ void ANBG_Projectiles::PostInitializeComponents()
     Super::PostInitializeComponents();
 }
 
-void ANBG_Projectiles::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+void ANBG_BigProjectile::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
     UE_LOG(LogTemp, Warning, TEXT("PostEditChangeProperty is %s"), PName(DT_ValueInGame));
     EnsureDataTableValue();
@@ -104,11 +117,11 @@ void ANBG_Projectiles::PostEditChangeProperty(FPropertyChangedEvent& PropertyCha
 
 #endif
 
-bool ANBG_Projectiles::EnsureDataTableValue()
+bool ANBG_BigProjectile::EnsureDataTableValue()
 {
     if (DT_ValueInGame)
     {
-        FString RowName = (isBoss?TEXT("BossProjectileSpeed"):TEXT("ProjectileSpeed"));
+        FString RowName = (isBoss ? TEXT("BossProjectileSpeed") : TEXT("ProjectileSpeed"));
         float ValueFromDataTable = static_cast<float>(GetDataTableValue(RowName));
         ProjectileMovementComponent->InitialSpeed = ValueFromDataTable;
         ProjectileMovementComponent->MaxSpeed = ValueFromDataTable;
@@ -116,3 +129,4 @@ bool ANBG_Projectiles::EnsureDataTableValue()
     }
     return false;
 }
+

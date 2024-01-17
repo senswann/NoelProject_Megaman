@@ -5,38 +5,51 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
-#include "../../Private/Items/NBG_ItemParent.h"
+#include "../../Public/NBG_StatsStruct.h"
 #include "GameFramework/ProjectileMovementComponent.h" 
-#include "NBG_Projectiles.generated.h"
+#include "NBG_BigProjectile.generated.h"
 
 UCLASS()
-class NOELDESBG_API ANBG_Projectiles : public ANBG_ItemParent
+class NOELDESBG_API ANBG_BigProjectile : public APawn
 {
 	GENERATED_BODY()
+	
+	//pour stocker le pointeur de la DataTable
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
+	UDataTable* DT_ValueInGame;
 
 
-public:	
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UStaticMeshComponent* StaticMeshComponent;
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class USkeletalMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Components")
 	UBoxComponent* BoxCollision;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-    UProjectileMovementComponent* ProjectileMovementComponent;
+	UProjectileMovementComponent* ProjectileMovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
-	int32 Dammage=0;
+	int32 Dammage = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
 	bool isBoss = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Value, meta = (AllowPrivateAccess = "true"))
+	bool isCailloux = false;
 	// Sets default values for this actor's properties
-	ANBG_Projectiles();
+	ANBG_BigProjectile();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	int32 GetDataTableValue(const FString RowName);
+
 	virtual void PreInitializeComponents();
+
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 #if WITH_EDITOR
 	//Handle UDataTable after first compile of project

@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "Widget/NBG_HUD.h"
 #include "Widget/NBG_Menu.h"
+#include "Items/NBG_BigProjectile.h"
 #include "NBG_E_Hero.h"
 #include "NBG_MegamanSystem.h"
 #include "NBG_HeroCharacter.generated.h"

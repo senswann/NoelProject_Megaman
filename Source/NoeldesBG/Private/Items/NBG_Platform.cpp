@@ -43,7 +43,7 @@ void ANBG_Platform::BeginPlay()
         InterpArray.Add(FInterpControlPoint(Locations[1], true));
 
         InterpToMovementComponent->ControlPoints = InterpArray;
-        InterpToMovementComponent->Duration = Duration;
+        InterpToMovementComponent->Duration = (faster?Duration-0.5f:Duration);
         InterpToMovementComponent->FinaliseControlPoints();
         InterpToMovementComponent->Activate();
     }

@@ -45,6 +45,8 @@ void ANBG_MegamanSystem::Menu()
         Menu_W->SetVisibility(ESlateVisibility::Hidden);
         SetGameOnlyInputMode();
     }
+    SetGamePaused(visibility);
+
     visibility = !visibility;
 }
 
@@ -85,6 +87,7 @@ void ANBG_MegamanSystem::GameOver()
 {
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
     {
+        SetGamePaused(true);
         if (GetWorld())
         {
             GameOver_W = CreateWidget<UUserWidget>(PlayerController, GameOver_Class);
@@ -98,6 +101,7 @@ void ANBG_MegamanSystem::StageSelection()
 {
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
     {
+        SetGamePaused(true);
         if (GetWorld())
         {
             StageSelection_W = CreateWidget<UUserWidget>(PlayerController, StageSelection_Class);
@@ -139,5 +143,13 @@ void ANBG_MegamanSystem::SetGameOnlyInputMode()
 
         // Affichez le curseur de la souris
         PlayerController->bShowMouseCursor = false;
+    }
+}
+
+void ANBG_MegamanSystem::SetGamePaused(bool isPause)
+{
+    if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+    {
+        PlayerController->SetPause(isPause);
     }
 }

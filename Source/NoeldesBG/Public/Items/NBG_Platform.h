@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value")
 	bool OpenPlatformBool = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Value")
+	bool faster = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Value", meta = (MakeEditWidget, ExposeOnSpawn, InstanceEditable))
     TArray<FVector> Locations;
 

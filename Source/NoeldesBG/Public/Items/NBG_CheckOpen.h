@@ -13,9 +13,10 @@ class NOELDESBG_API ANBG_CheckOpen : public AActor
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditDefaultsOnly, Category = "Components")
-		UBoxComponent* BoxCollision;
-	
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UBoxComponent* BoxCollision;
+
+	FTimerHandle TimerHandle;
 public:	
 	// Sets default values for this actor's properties
 	ANBG_CheckOpen();

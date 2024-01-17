@@ -10,14 +10,16 @@ void UNBG_HUD::AddPoint(int32 _points) {
 
 void UNBG_HUD::SetHP(int32 _hp) {
 	UE_LOG(LogTemp, Warning, TEXT("HP Set"));
-	HP = (static_cast<float>(_hp) / HP_Max);
+	HP = (static_cast<float>(_hp) / (HP_Max));
 	UE_LOG(LogTemp, Warning, TEXT("Ma variable float : %f"), HP);
 	HP_Slider->SetPercent(HP);
 }
 
 void UNBG_HUD::SetHPBoss(int32 _hp) {
-	UE_LOG(LogTemp, Warning, TEXT("HP Set"));
-	HP_Boss = (static_cast<float>(_hp) / HP_Max_Boss);
+	UE_LOG(LogTemp, Warning, TEXT("HP Boss Set: %f"), _hp);
+	UE_LOG(LogTemp, Warning, TEXT("HP Max Boss Set: %f"), HP_Max_Boss);
+	HP_Boss = (static_cast<float>(_hp) / (HP_Max_Boss));
+	UE_LOG(LogTemp, Warning, TEXT("Ma variable float Boss : %f"), HP_Boss);
 	HP_Slider_Boss->SetPercent(HP_Boss);
 }
 

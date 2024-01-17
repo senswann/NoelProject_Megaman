@@ -19,7 +19,7 @@ class NOELDESBG_API UNBG_HUD : public UUserWidget
 	int32 HP_Max=0;
 	float HP = 0;
 
-	int32 HP_Max_Boss=0;
+	int32 HP_Max_Boss=250;
 	float HP_Boss=0;
 
 public:

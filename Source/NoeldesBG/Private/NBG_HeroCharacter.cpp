@@ -207,7 +207,7 @@ void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
 			IsShootEnabled = true;
-			}, ShootSpeed, false);
+			}, ShootSpeed/2.f, false);
 		FVector ArrowLocation = ShootArrowComponent->GetComponentLocation();
 		FRotator ArrowRotation = ShootArrowComponent->GetComponentRotation();
 		FTransform SpawnTransform;
@@ -284,8 +284,13 @@ void ANBG_HeroCharacter::GetDamage(int32 _dmg)
 }
 
 void ANBG_HeroCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
-	UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+	UE_LOG(LogTemp, Warning, TEXT("Overlap: %s"), *OtherActor->GetName());
 	if (ANBG_Projectiles* other = Cast<ANBG_Projectiles>(OtherActor)) {
 		GetDamage(other->Dammage);
+	}
+	else if (ANBG_BigProjectile* other2 = Cast<ANBG_BigProjectile>(OtherActor)) {
+		UE_LOG(LogTemp, Warning, TEXT("CAILLOUX: %s"), *OtherActor->GetName());
+		other2->isCailloux = true;
+		GetDamage(other2->Dammage);
 	}
 }

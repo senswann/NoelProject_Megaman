@@ -73,6 +73,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetGameOnlyInputMode();
 
+	void SetGamePaused(bool isPause);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
