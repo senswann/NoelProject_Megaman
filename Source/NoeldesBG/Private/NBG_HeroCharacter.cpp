@@ -207,7 +207,7 @@ void ANBG_HeroCharacter::IA_Shoot(const FInputActionValue& Value)
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
 			IsShootEnabled = true;
-			}, ShootSpeed/2.f, false);
+			}, ShootSpeed/1.25f, false);
 		FVector ArrowLocation = ShootArrowComponent->GetComponentLocation();
 		FRotator ArrowRotation = ShootArrowComponent->GetComponentRotation();
 		FTransform SpawnTransform;

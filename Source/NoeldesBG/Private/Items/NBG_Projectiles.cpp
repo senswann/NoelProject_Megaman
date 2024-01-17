@@ -74,7 +74,7 @@ void ANBG_Projectiles::BeginPlay()
         GetWorldTimerManager().SetTimer(TimerHandle, [this]()
             {
                 StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-            }, 0.05f, false);
+            }, 0.02f, false);
     }
 }
 
