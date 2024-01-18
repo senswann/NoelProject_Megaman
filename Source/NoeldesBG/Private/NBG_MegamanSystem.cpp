@@ -97,11 +97,26 @@ void ANBG_MegamanSystem::GameOver()
     }
 }
 
-void ANBG_MegamanSystem::StageSelection()
+void ANBG_MegamanSystem::EndGame()
 {
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
     {
         SetGamePaused(true);
+        if (GetWorld())
+        {
+            EndGame_W = CreateWidget<UUserWidget>(PlayerController, EndGame_Class);
+            EndGame_W->AddToViewport();
+            SetUIOnlyInputMode(EndGame_W);
+        }
+    }
+}
+
+void ANBG_MegamanSystem::StageSelection()
+{
+    if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+    {
+        if(indexLevel==1)
+            SetGamePaused(true);
         if (GetWorld())
         {
             StageSelection_W = CreateWidget<UUserWidget>(PlayerController, StageSelection_Class);

@@ -32,14 +32,19 @@ class NOELDESBG_API ANBG_MegamanSystem : public AGameModeBase
 	TSubclassOf<class UUserWidget> GameOver_Class;
 	UUserWidget* GameOver_W;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class UUserWidget> EndGame_Class;
+	UUserWidget* EndGame_W;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Value", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class UUserWidget> Menu_Class;
 	UUserWidget* Menu_W;
 
-	static int32 indexLevel;
 	bool visibility = false;
 
 public:
+	static int32 indexLevel;
+
 	void AddPoint(int32 _point);
 	inline void SetHUD(UNBG_HUD* _HUD) { HUD = _HUD; };
 
@@ -60,6 +65,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void GameOver();
+
+	UFUNCTION(BlueprintCallable)
+	void EndGame();
 
 	UFUNCTION(BlueprintCallable)
 	void StageSelection();

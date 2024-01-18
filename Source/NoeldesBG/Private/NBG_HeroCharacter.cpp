@@ -106,17 +106,22 @@ void ANBG_HeroCharacter::BeginPlay()
 		}
 		if (GetWorld())
 		{
-			// Créer une instance de votre widget HUD
-			HUD = CreateWidget<UNBG_HUD>(PlayerController, HUD_Class);
+			if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
+				UE_LOG(LogTemp, Warning, TEXT("GAME INDEX %d"), _GameMode->indexLevel);
+				if (_GameMode->indexLevel == 1) {
+					// Créer une instance de votre widget HUD
+					HUD = CreateWidget<UNBG_HUD>(PlayerController, HUD_Class);
 
-			if (HUD)
-			{
-				// Ajouter le widget à la vue (viewport)
-				HUD->AddToViewport();
-				UE_LOG(LogTemp, Warning, TEXT("Valeur HP: %d"), HP_Max);
-				HUD->SetHP_Max(HP_Max);
-				if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
-					_GameMode->SetHUD(HUD);
+					if (HUD)
+					{
+						// Ajouter le widget à la vue (viewport)
+						HUD->AddToViewport();
+						UE_LOG(LogTemp, Warning, TEXT("Valeur HP: %d"), HP_Max);
+						HUD->SetHP_Max(HP_Max);
+						if (ANBG_MegamanSystem* _GameMode = Cast<ANBG_MegamanSystem>(UGameplayStatics::GetGameMode(GetWorld()))) {
+							_GameMode->SetHUD(HUD);
+						}
+					}
 				}
 			}
 		}
