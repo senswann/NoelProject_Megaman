@@ -20,6 +20,19 @@ void ANBG_CheckOpen::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ANBG_CheckOpen::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    if (this && GetWorld())
+    {
+        GetWorldTimerManager().ClearTimer(TimerHandle);
+        UE_LOG(LogTemp, Error, TEXT("Sucessfully cleared timer call!"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to clear timer calls !"));
+    }
+}
+
 void ANBG_CheckOpen::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     if (ANBG_Platform* other = Cast<ANBG_Platform>(OtherActor)) {
@@ -27,7 +40,14 @@ void ANBG_CheckOpen::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
             BoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
             other->OpenPlatform();
             GetWorldTimerManager().SetTimer(TimerHandle, [this]() {
-                BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+                if (this && IsValid(this) && this->BoxCollision && IsValid(this->BoxCollision))
+                {
+                    BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Error, TEXT("I am indeed crashing !"));
+                }
             }, 0.3, false);
         }
     }
